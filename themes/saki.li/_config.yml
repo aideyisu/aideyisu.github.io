@@ -1,0 +1,9 @@
+menu:
+  Home: /
+  Archives: /archives
+  About: /about
+  RSS: /rss
+
+excerpt: false
+favicon: favicon.png
+license: 本站文章使用 CC BY-NC-SA 4.0 许可证
