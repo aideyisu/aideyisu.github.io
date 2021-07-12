@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    
+    <title>Python二分查找内置库bisect - 爱的伊苏&#39;s blog</title>
+    <meta charset="utf-8">
+    
+    <meta name="title" content="Python二分查找内置库bisect - 爱的伊苏&#39;s blog">
+    <meta name="description" content="">
+    <meta property="og:image" content="/favicon.png">
+    <meta property="og:image:width" content="200" />
+    <meta property="og:image:height" content="200" />
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    <link rel="stylesheet"
+        href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/arduino-light.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/js/jquery.min.js"></script>
+
+    
+<script src="/js/saki.js"></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">爱的伊苏&#39;s blog</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+      
+      
+      <li class="menu-item">
+        
+        <a href="/" class="menu-item-link">Home</a>
+        
+      </li>
+      
+      
+      
+      <li class="menu-item">
+        
+        <a href="/archives" class="menu-item-link">Archives</a>
+        
+      </li>
+      
+      
+      
+      <li class="menu-item">
+        
+        <a href="/about" class="menu-item-link">About</a>
+        
+      </li>
+      
+      
+      
+      <li class="menu-item">
+        
+        <a href="/rss" class="menu-item-link">RSS</a>
+        
+      </li>
+      
+    </ul>
+  </nav>
+</header>
+  <main class="main">
+    <article class="post">
+    <div class="post-title">
+        <h1 class="title">Python二分查找内置库bisect</h2>
+    </div>
+    <div class="post-content">
+        <p>今天突然在网上看到的库，可以快速排序，叫做bisect<br>bisect模块实现了二分查找和插入算法，短小精干，简单易用</p>
+<h2 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h2><p>我们首先来看看官方文档<br>This module provides support for maintaining a list in sorted order without having to sort the list after each insertion. For long lists of items with expensive comparison operations, this can be an improvement over the more common approach. The module is called bisect because it uses a basic bisection algorithm to do its work. The source code may be most useful as a working example of the algorithm (the boundary conditions are already right!).<br>重点:支持安排序顺序维护列表，使用二分查找方法提速，源码或许是最有用的工程算法实现(hhh官方吹捧<br>Ps - 使用此库前请保证list有序<br>Bisect 是二分法的意思，这里使用二分法来排序，它会将一个元素插入到一个有序列表的合适位置，这使得不需要每次调用 sort 的方式维护有序列表。</p>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p>bisect模块采用经典的二分算法查找元素。模块提供下面几个方法：<br>bisect.bisect_left(a, x, lo=0, hi=len(a))<br>定位x在序列a中的插入点，并保持原来的有序状态不变。参数lo和hi用于指定查找区间。如果x已经存在于a中，那么插入点在已存在元素的左边。函数的返回值是列表的整数下标。<br>bisect.bisect_right(a, x, lo=0, hi=len(a))<br>和上面的区别是插入点在右边。函数的返回值依然是一个列表下标整数。<br>bisect.bisect(a, x, lo=0, hi=len(a))<br>等同于bisect_right()。<br>注意，前面这三个方法都是获取插入位置，也就是列表的某个下标的，并不实际插入。但下面三个方法实际插入元素，没有返回值。<br>bisect.insort_left(a, x, lo=0, hi=len(a))<br>将x插入有序序列a内，并保持有序状态。相当于a.insert(bisect.bisect_left(a, x, lo, hi), x)。碰到相同的元素则插入到元素的左边。这个操作通常是 O(log n) 的时间复杂度。<br>bisect.insort_right(a, x, lo=0, hi=len(a))<br>同上，只不过碰到相同的元素则插入到元素的右边。<br>bisect.insort(a, x, lo=0, hi=len(a))<br>等同于insort_right()。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>官方文档中给出了一个简单实用例子和<br>利用利用bisect模块实现通用的列表元素查询方法的示范<br>文档链接：<br><a href="https://docs.python.org/3/library/bisect.html" target="_blank" rel="noopener">https://docs.python.org/3/library/bisect.html</a><br>可以自行食用</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>源码<br><a href="https://github.com/python/cpython/blob/3.8/Lib/bisect.py" target="_blank" rel="noopener">https://github.com/python/cpython/blob/3.8/Lib/bisect.py</a><br>最近比较喜欢阅读官方文档和源码，很多教程写来写去也没说明白不如直接去看官方示例<br>所以除了最基本解释就不写了，大家可以直接看源码感受一下</p>
+
+    </div>
+    <div class="post-meta">
+        <span class="post-time">2020/07/05</span>
+    </div>
+</article>
+
+<div class="prev_next">
+    <nav id="prev_next">
+
+<div class="prev">
+    
+    <p>Newer</p>
+    <a href="/2020/07/22/秋招近期安排/"><div class="article-nav-title">秋招近期安排</div></a>
+    
+</div>
+<div class="next">
+    
+    <p>Older</p>
+    <a href="/2020/06/07/网络安全-反序列化问题/"><div class="article-nav-title">网络安全:反序列化问题</div></a>
+    
+</div>
+
+</nav>
+</div>
+
+<div class="post-comment">
+    
+
+
+</div>
+  </main>
+</body>
+
+</html>

